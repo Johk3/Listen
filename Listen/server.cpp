@@ -1,9 +1,24 @@
 #include <iostream>
 #include <string>
 #include <WS2tcpip.h>
+#include <algorithm>
+
 
 #pragma comment (lib, "ws2_32.lib")
 
+
+std::string parse(std::string input) {
+	input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
+
+	return input;
+}
+
+std::string process(std::string message) {
+	if (message == "lul") {
+		std::cout << "Works" << std::endl;
+	}
+	return "";
+}
 
 void server() {
 	// Initialize winsock
@@ -28,6 +43,9 @@ void server() {
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(54000);
 	hint.sin_addr.S_un.S_addr = INADDR_ANY;
+
+	std::cout << "PORT: ";
+	std::cout << ntohs(hint.sin_port) << std::endl;
 
 	bind(listening, (sockaddr*)&hint, sizeof(hint));
 
@@ -76,6 +94,9 @@ void server() {
 		}
 
 		// Echo message back to client
+		std::string message = parse(buf);
+		std::string procmessage = process(message);
+		std::cout << message << std::endl;
 		send(clientSocket, buf, bytesReceived + 1, 0);
 	}
 
@@ -84,10 +105,4 @@ void server() {
 
 	// Cleanup winsock
 	WSACleanup();
-}
-
-std::string test(std::string input) {
-	std::cout << "Successful run" << std::endl;
-
-	return input;
 }

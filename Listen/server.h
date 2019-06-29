@@ -2,8 +2,8 @@
 #include <string>
 #include <iostream>
 #include <WS2tcpip.h>
+#include <algorithm>
 
-std::string test(std::string input);
 
 // Server
 void server();
