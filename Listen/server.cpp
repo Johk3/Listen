@@ -9,7 +9,6 @@
 
 std::string parse(std::string input) {
 	input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
-
 	return input;
 }
 
@@ -95,9 +94,15 @@ void server() {
 
 		// Echo message back to client
 		std::string message = parse(buf);
-		std::string procmessage = process(message);
 		std::cout << message << std::endl;
-		send(clientSocket, buf, bytesReceived + 1, 0);
+		std::string outmessage;
+		std::cout << "<Server>: ";
+		std::getline(std::cin, outmessage);
+		std::cout << bytesReceived << std::endl;
+
+		int outBytesReceived = outmessage.length();
+
+		send(clientSocket, outmessage.c_str(), outBytesReceived, 0);
 	}
 
 	// Close the socket
